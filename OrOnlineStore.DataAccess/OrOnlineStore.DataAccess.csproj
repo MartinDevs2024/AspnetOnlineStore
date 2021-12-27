@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OrOnlineStore.Models\OrOnlineStore.Models.csproj" />
+    <ProjectReference Include="..\OrOnlineStore.Utility\OrOnlineStore.Utility.csproj" />
+  </ItemGroup>
+
+</Project>

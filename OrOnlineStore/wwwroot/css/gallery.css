@@ -1,0 +1,50 @@
+﻿
+
+/*---------------
+      Gallery-Area
+    -----------------*/
+
+:root {
+    /* Set fade in duration */
+    --fade-time: 0.5s;
+}
+
+#thumbgallery .container-area {
+    max-width: 760px;
+    margin: auto;
+    border: #fff solid 3px;
+    background: #fff;
+}
+
+#thumbgallery .mymain-img img,
+#thumbgallery .imgs img {
+    width: 100%;
+}
+
+#thumbgallery .imgs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 5px;
+}
+
+    #thumbgallery .imgs img {
+        cursor: pointer;
+    }
+/* Fade in animation */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn var(--fade-time) ease-in 1 forwards;
+    /* Media Queries */
+}
+
+@media(max-width: 600px) {
+    #thumbgallery .imgs {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

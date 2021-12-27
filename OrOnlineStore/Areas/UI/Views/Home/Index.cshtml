@@ -1,0 +1,296 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<style>
+    #searchBar {
+        width: 100%;
+        height: 32px;
+        border-radius: 3px;
+        border: 1px solid #eaeaea;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    #searchWrapper {
+        position: relative;
+    }
+
+        #searchWrapper::after {
+            content: '🔍';
+            position: absolute;
+            top: 7px;
+            right: 15px;
+        }
+</style>
+
+<!-- slider -->
+<section>
+    <div class="hero-slider">
+        <!-- slider item -->
+        <div class="hero-slider-item bg-cover hero-section" data-background="content/images/img/myslide1.jpg" />
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6" data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">
+                    <h4 class="mb-0 letter-spacing">Customer Service&nbsp; Is On Display All The Time!</h4>
+                    <h1 class="mb-4">We are here for you</h1>
+                    <p class="mb-5">Service Center is ready to help with all you appliance repair and service needs</p>
+                    <a href="/MyMessages/New" class="btn btn-primary-outline" data-duration-in=".3" data-animation-in="zoomIn" data-delay-in=".4">Order Diagnostics</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider item -->
+    <div class="hero-slider-item bg-cover hero-section" data-background="content/images/img/myslide2.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6" data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".1">
+                    <h4 class="mb-0 letter-spacing">Is On Display All The Time!</h4>
+                    <h1 class="mb-4">We are here for the Customer</h1>
+                    <p class="mb-5">Service Center is ready to help with all you appliance repair and service needs</p>
+                    <a href="/MyMessages/New" class="btn btn-primary-outline" data-duration-in=".3" data-animation-in="zoomIn" data-delay-in=".4">Order Diagnostics</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider item -->
+    <div class="hero-slider-item bg-cover hero-section" data-background="content/images/img/myslide3.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6" data-duration-in=".3" data-animation-in="fadeInLeft" data-delay-in=".1">
+                    <h4 class="mb-0 letter-spacing">Customer Support<br>Is Not a Service,<br>It's an Attitude.</h4>
+                    <h1 class="mb-4">We are here for you!</h1>
+                    <p class="mb-5">Service Center is ready to help with all you appliance repair and service needs</p>
+                    <a href="/MyMessages/New" class="btn btn-primary-outline" data-duration-in=".3" data-animation-in="zoomIn" data-delay-in=".4">Order Diagnostics</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider item -->
+    <div class="hero-slider-item bg-cover hero-section" data-background="content/images/img/slide4.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6" data-duration-in=".3" data-animation-in="fadeInRight" data-delay-in=".1">
+                    <h4 class="mb-0 letter-spacing">Professional. Friendly. Courteous.</h4>
+                    <h1 class="mb-4">We can fix you!</h1>
+                    <p class="mb-5">Service Center is ready to help with all you appliance repair and service needs</p>
+                    <a href="about.html" class="btn btn-primary-outline" data-duration-in=".3" data-animation-in="zoomIn" data-delay-in=".4">Order Diagnostics</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /slider -->
+<!-- <header>
+    <div class="header-content">
+        <div class="header-content-inner">
+            <h1 id="homeHeading" class="mx-auto my-0 text-uppercase">PROFESSIONAL, OR APPLIANCE REPAIR FOR YOUR HOME OR BUSINESS</h1>
+            <hr>
+            <p class="text-white-75 mb-5">With OR Appliance Repair, you can rely on fast and skilled same day appliance repair service. Just give Us a Call, no strings attached!</p>
+            <a href="/MyMessages/New" class="btn btn-primary btn-xl page-scroll">Send Me a Message</a>
+        </div>
+    </div>
+</header>
+    -->
+
+<section id="service-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="text-title">Our Services</h2>
+                <p class="para">You can rest assured that repairs are only performed with your prior approval of the work</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="manufactory-area" class="m-3">
+    <div class="container widget-area">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="text-title d-flex">Manufacturers</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="owl-demo" class="owl-carousel owl-theme">
+                    <div class="item">
+                        <img class="img-fluid circle" src="~/content/images/brands/subzero-logo.jpg" alt="img1">
+                    </div>
+                    <div class="item">
+                        <img class="img-fluid circle" src="~/content/images/brands/sharp-logo.png" alt="img1">
+                    </div>
+                    <div class="item">
+                        <img class="img-fluid circle" src="~/content/images/brands/maytag-logo.jpg" alt="img1">
+                    </div>
+                    <div class="item"><img class="img-fluid circle" src="~/content/images/brands/samsung-logo.png" alt="img1"></div>
+                    <div class="item"><img class="img-fluid circle" src="~/content/images/brands/lg-logo.png" alt="img1"></div>
+                    <div class="item"><img class="img-fluid circle" src="~/content/images/brands/wolf-logo.png" alt="img1"></div>
+                    <div class="item"><img class="img-fluid circle" src="~/content/images/brands/frigidaire-logo.png" alt="img1"></div>
+                    <div class="item"><img class="img-fluid circle" src="~/content/images/brands/whirlpool-logo.png" alt="img1"></div>
+                    <div class="item"><img class="img-fluid circle" src="~/content/images/brands/ge-logo.png" alt="img1"></div>
+                    <div class="item"><img class="img-fluid circle" src="~/content/images/brands/viking-logo.png" alt="img1"></div>
+                    <div class="item"><img class="img-fluid circle" src="~/content/images/brands/amana-logo.png" alt="img1"></div>
+                    <div class="item"><img class="img-fluid circle" src="~/content/images/brands/monogram-logo.png" alt="img1"></div>
+                    <div class="item"><img class="img-fluid circle" src="~/content/images/brands/haier-logo.png" alt="img1"></div>
+                    <div class="item"><img class="img-fluid circle" src="~/content/images/brands/bosch-logo.png" alt="img1"></div>
+                    <div class="item"><img class="img-fluid circle" src="~/content/images/brands/hotpoint-logo.png" alt="img1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Card-area -->
+<section id="card-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <hr />
+                <h2 class="text-center">HOME APPLIANCE REPAIR</h2>
+                <hr />
+            </div>
+        </div>
+        <div id="card" class="row"></div>
+    </div>
+</section>
+
+
+<section id="services" class="mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <hr />
+                <h2 class="section-heading">We Provide</h2>
+                <hr class="primary">
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <div class="card">
+                    <img class="img-fluid" src="~/content/images/provide/90daywarranty.png" alt="warranty">
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="card">
+                    <img class="img-fluid" src="~/content/images/provide/LOW-PRICE.jpg" alt="low-prices">
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="card">
+                    <img class="img-fluid" src="~/content/images/provide/Customer-Support.jpg" alt="customer-support">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<div id="map">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h3>Areas we covered for Appliance Repair and Electronics Repair Services</h3>
+                <hr class="primary">
+            </div>
+        </div>
+        <div class="row">
+            <div class="embed-responsive embed-responsive-21by9">
+                <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d450906.42910153605!2d-81.89883115548457!3d28.002875335561708!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88dd6ac339a94f0f%3A0x38be38b0aeedeb98!2sPolk%20County%2C%20FL!5e0!3m2!1sen!2sus!4v1595981023610!5m2!1sen!2sus" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="row mt-4 mb-4">
+            <div class="col-lg-12">
+                <div id="city" class="justify-content-end"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+<section id="cta">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <h3>Having a Problem with a Home Appliance?</h3>
+            <h4>Give us a call and we’ll fix your appliance at a very reasonable rate.</h4>
+            <h4 class="second-text">Call Us Now At 863-216-8903</h4>
+        </div>
+    </div>
+</section>
+<section class="section" id="section--3">
+    <div class="section__title section__title--testimonials">
+        <h2 class="section__description">Not sure yet?</h2>
+        <h3 class="section__header">
+            Quality Appliance Repairs For Less!!
+        </h3>
+    </div>
+
+    <div class="slider">
+        <div class="slide slide--1">
+            <div class="testimonial">
+                <h5 class="testimonial__header">Best decision ever!</h5>
+                <blockquote class="testimonial__text">
+                    We service all makes and models.
+                    Appliances are an investment. We'll help you keep yours running smoothly, minimizing down time. When the time comes, we'll offer you advice on new purchases. With our knowledge and skills
+                </blockquote>
+                <address class="testimonial__author">
+                    <img src="img/user-1.jpg" alt="" class="testimonial__photo" />
+                    <h6 class="testimonial__name">OR Technician</h6>
+                    <p class="testimonial__location">Polk County, FL</p>
+                </address>
+            </div>
+        </div>
+
+        <div class="slide slide--2">
+            <div class="testimonial">
+                <h5 class="testimonial__header">
+                    Just one simple step contact us!! We do the rest!!
+                </h5>
+                <blockquote class="testimonial__text">
+                    You can put your trust and confidence in our capable hands.
+                    You can rest assured that we'll do a thorough diagnosis, and we'll only fix what's actually broken.
+                    With our knowledge and skills, we guarantee you great results. You will not be disappointed. Schedule your repair today.
+                </blockquote>
+                <address class="testimonial__author">
+                    <img src="img/user-2.jpg" alt="" class="testimonial__photo" />
+                    <h6 class="testimonial__name">Or Technician</h6>
+                    <p class="testimonial__location">Polk County, Fl</p>
+                </address>
+            </div>
+        </div>
+
+        <div class="slide slide--3">
+            <div class="testimonial">
+                <h5 class="testimonial__header">
+                    Finally we do free instimates over the Phone!!
+                </h5>
+                <blockquote class="testimonial__text">
+                    Same Day Service
+                    No Hidden Fees
+                    Free Appliance Advice
+                    Locally owned and operated
+                    Superior Customer Service
+                    Honest Business Practices
+                </blockquote>
+                <address class="testimonial__author">
+                    <img src="img/user-3.jpg" alt="" class="testimonial__photo" />
+                    <h6 class="testimonial__name">Or Technician</h6>
+                    <p class="testimonial__location">Polk County, Fl</p>
+                </address>
+            </div>
+        </div>
+
+        <!-- <div class="slide"><img src="img/img-1.jpg" alt="Photo 1" /></div>
+        <div class="slide"><img src="img/img-2.jpg" alt="Photo 2" /></div>
+        <div class="slide"><img src="img/img-3.jpg" alt="Photo 3" /></div>
+        <div class="slide"><img src="img/img-4.jpg" alt="Photo 4" /></div> -->
+        <button class="slider__btn slider__btn--left">&larr;</button>
+        <button class="slider__btn slider__btn--right">&rarr;</button>
+        <div class="dots"></div>
+    </div>
+</section>
+@section scripts {
+    <script src="~/js/core.js"></script>
+    <script src="~/js/slider.js"></script>
+    <script src="~/js/repair.js"></script>
+}

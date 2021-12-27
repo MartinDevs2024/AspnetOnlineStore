@@ -1,0 +1,27 @@
+﻿@using OrOnlineStore.Utility
+
+<nav class="navbar navbar-expand-md navbar-toggleable-sm navbar-dark bg-primary mb-3">
+    <div class="container">
+        <!-- Branding Image -->
+        <a class="navbar-brand" href="/"><span style="color:red; font-weight: 600;">OR/</span>SERVICES</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between" id="navbarsExampleDefault">
+            <!-- Left Side Of Navbar -->
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">@Html.ActionLink("Shop-All", "Index", "Product", new { area = "" }, new { @class = "nav-link" })</li>
+                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin"
+                           asp-for="Admin" asp-controller="Panel" asp-action="FrontPage">Panel</a>
+                    </li>
+                }
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <partial name="_LoginPartial" />
+            </ul>
+        </div>
+    </div>
+</nav>

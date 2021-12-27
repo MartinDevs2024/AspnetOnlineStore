@@ -1,0 +1,125 @@
+﻿@model IEnumerable<OrOnlineStore.Models.Product>
+
+@{
+    var Title = "Latest Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Box icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+
+<!-- page title -->
+<section class="section bg-cover overlay" data-background="images/backgrounds/page-title.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-white mb-3">@Title</h2>
+                <!-- breadcrumb -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0">
+                        <li class="breadcrumb-item font-weight-semebold"><a class="text-white" href="index.html">Home</a></li>
+                        <li class="breadcrumb-item font-weight-semebold active text-primary" aria-current="page">Latest Products</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- All Products -->
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Widgets Column -->
+        <div class="col-lg-3 col-md-3">
+            <!-- Categories Widget -->
+            <div class="card my-3">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
+                    <div class="input-group" id="searchWrapper">
+                        <input type="text" class="form-control"
+                               name="searchBar"
+                               id="searchBar"
+                               placeholder="Search for...">
+                    </div>
+                </div>
+                <h5 class="card-header">Categories</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6">
+                            <button type="button" class="mybtn btn btn-primary filter-btn" data-filter="all">
+                                All
+                            </button>
+                            <button type="button" class="mybtn btn btn-success filter-btn" data-filter="washer">
+                                Washer Parts
+                            </button>
+                            <button type="button" class="mybtn btn btn-success filter-btn" data-filter="dryer">
+                                Dryer Parts
+                            </button>
+                            <button type="button" class="mybtn btn btn-success filter-btn" data-filter="refrigator">
+                                Refrigator Parts
+                            </button>
+                            <button type="button" class="mybtn btn btn-success filter-btn" data-filter="kits">
+                                Repair kits
+                            </button>
+                            <button type="button" class="mybtn btn btn-success btn-rounded filter-btn" data-filter="oven">
+                                Oven Parts
+                            </button>
+                            <button type="button" class="mybtn btn btn-success btn-rounded filter-btn" data-filter="dishwasher">
+                                DishWasher Parts
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4 col-sm-6 col-xs-12 mb-4 store-products @product.Category.Name">
+                    <div id="store-products">
+                        <div class="core-features">
+                            <div class="circle">
+                                <img src="@product.ImageUrl" alt="@product.ProductTitle" class="img-fluid">
+                            </div>
+                            <div class="mb-3">
+                                <p>List Price: <strike><b class="">$@product.ListPrice.ToString("0.00")</b></strike></p>
+                                <p style="color:maroon">As low as: <b class="">$@product.Price100.ToString("0.00")</b></p>
+                                <span class="mb-2">$@product.ListPrice.ToString("0.00")</span>
+                                <hr />
+                                <a asp-action="Details" class="btn btn-primary" asp-route-id="@product.Id">Details</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        const btns = document.querySelectorAll(".mybtn");
+        const storeProducts = document.querySelectorAll(".store-products");
+        //const search
+        for (let i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", (e) => {
+                e.preventDefault();
+                const filter = e.target.dataset.filter;
+                console.log(filter);
+                storeProducts.forEach((product) => {
+                    if (filter === "all") {
+                        product.style.display = "grid";
+                    } else {
+                        if (product.classList.contains(filter)) {
+                            product.style.display = "grid";
+                        } else {
+                            product.style.display = "none";
+                        }
+                    }
+                });
+            });
+        }
+
+    </script>
+
+}
+

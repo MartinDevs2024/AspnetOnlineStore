@@ -1,0 +1,67 @@
+﻿@model OrOnlineStore.Models.ViewModels.IndexViewModel
+
+@{ ViewBag.Title = "Blog Website";
+    ViewBag.Description = "This Blog Has Everything";
+    ViewBag.Keywords = "Blog programing travel photography"; }
+
+<style>
+    .responsive {
+       width: 100%;
+       max-width: 400px;
+       height: auto;
+    }
+</style>
+<!-- page title -->
+<section class="section bg-cover overlay" data-background="images/backgrounds/page-title.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-white mb-3">Latest Posts</h2>
+                <!-- breadcrumb -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0">
+                        <li class="breadcrumb-item font-weight-semebold"><a class="text-white" href="index.html">Home</a></li>
+                        <li class="breadcrumb-item font-weight-semebold active text-primary" aria-current="page">Latest Posts</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            @foreach (var post in Model.Posts)
+            {
+                var image_path = $"/Image/{post.Image}";
+               
+            <div class="card mb-4 box-shadow">
+                <img class="responsive rounded mx-auto d-block" src="@image_path" alt="Card image cap"/>
+                <div class="card-body">
+                    <h5 class="card-title">@post.Title</h5>
+                    <p class="card-text">
+                        @{ var desc = post.Description; }
+                        @desc.Substring(0, 15)....
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a asp-action="Detail" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        @if (Model.PageNumber > 1)
+        {
+            <a class="btn btn-info" asp-action="Index" asp-controller="Post" asp-route-category="@Model.Category"
+               asp-route-pageNumber="@(Model.PageNumber - 1)">Previous Page</a>}
+        @if (Model.NextPage)
+        {
+            <a class="btn btn-info" asp-action="Index" asp-controller="Post" asp-route-category="@Model.Category"
+               asp-route-pageNumber="@(Model.PageNumber + 1)">Next Page</a>}
+    </div>
+
+
+</div>

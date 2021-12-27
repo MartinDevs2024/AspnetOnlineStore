@@ -1,0 +1,72 @@
+﻿@model Post
+
+@{
+    ViewBag.Title = "Detail";
+    ViewBag.Description = "Model.Description";
+    ViewBag.Keywords = $"{Model.Tags?.Replace(",", "")}{Model.Category}";
+}
+
+@*
+    <h2>@Model.Title</h2>
+    @if (!String.IsNullOrEmpty(Model.Image))
+    {
+        var image_path = $"/Image/{Model.Image}";
+        <img src="@image_path" width:"500"/>
+    }
+    <p>@Model.Body</p>
+*@
+<style>
+    p {
+        color: black;
+    }
+</style>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="card-my-4 mt-5">
+                Best Web Design & Template Detail Page
+                <br><small>Blogs for  @DateTime.Now.Year</small>
+            </h1>
+            <hr />
+
+            @if (!String.IsNullOrEmpty(Model.Image))
+            {
+                var image_path = $"/Image/{Model.Image}";
+                <img style="width:100%" class="img-thumbnail" src="@image_path" />
+                <span class="title">@Model.Title</span>
+            }
+            <div class="post-body">
+                @Html.Raw(Model.Body)
+            </div>
+            <div class="post__comments">
+                @{
+                    await Html.RenderPartialAsync("_MainComment", new CommentViewModel { PostId = Model.Id, MainCommentId = 0 });
+                }
+                @foreach (var c in Model.MainComments)
+                {
+                    <p>
+                        @c.Message --- @c.Created
+
+                    </p>
+                    <div style="margin-left: 20px;">
+                        <h4>Sub Comments</h4>
+                        @{
+                            await Html.RenderPartialAsync("_MainComment", new CommentViewModel { PostId = Model.Id, MainCommentId = c.Id });
+                        }
+                        @foreach (var sc in c.SubComments)
+                        {
+                            <p class="para">
+                                @sc.Message --- @sc.Created
+
+                            </p>
+
+                        }
+                    </div>
+                }
+            </div>
+            <a class="btn btn-info" asp-controller="Post" asp-action="Index">Go Back To List</a>
+        </div>
+    </div>
+</div>

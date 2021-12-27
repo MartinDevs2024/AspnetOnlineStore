@@ -1,0 +1,75 @@
+﻿@model RepairViewModel
+
+@{
+    var title = "Create Repair Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <form asp-controller="Repairs" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model.Id != 0)
+        {
+            //Edit
+            title = "Edit Repair Type";
+        }
+        <h2>@title</h2>
+        <input asp-for="Id" type="hidden" />
+        <div class="form-group">
+            <label>Repair Type</label>
+            <select class="form-control" asp-for="RepairType">
+                <option value="Washer-Repair">Washer-Repair</option>
+                <option value="Refrigator-Repair">Refrigator-Repair</option>
+                <option value="Dryer-Repair">Dryer-Repair</option>
+                <option value="CookTop-Repair">Cooktop-Repair</option>
+                <option value="Garbage-Disposal-Repair">Garbage-Disposal-Repair</option>
+                <option value="Range-Stoves-Repair">Range-Stoves-Repair</option>
+                <option value="Refrigator-Repair">Refrigator-Repair</option>
+                <option value="Stand-Alone-Freezers-Repair">Stand Alone Freezers Repair</option>
+                <option value="Wall-Oven-Repair">Wall Oven Repair</option>
+                <option value="Washer-Dryer-Repair">Washer and Dryer Repair</option>
+                <option value="DishWasher-Repair">Dish Washer Repair</option>
+                <option value="IceMachine-Repair">IceMachine Repair</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>We Are Locate it </label>
+            <input class="form-control" asp-for="Location" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Description Repair</label>
+            <textarea asp-for="Description" id="summernote" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Areas We Cover</label>
+            <input class="form-control" asp-for="AreaCover" />
+        </div>
+        @if (Model.Id != 0)
+        {
+            <div class="col-3 offset-1 pt-4">
+                <img src="/content/blog/@Model.CurrentImage" width="100" style="border-radius:5px; border:1px solid #bbb9b9" />
+            </div>
+        }
+        <div class="form-group">
+            <label>Image</label>
+            <br />
+            <input class="btn btn-primary" asp-for="CurrentImage" type="hidden" />
+            <input class="btn btn-outline-info" asp-for="ImageUrl" />
+        </div>
+        <div class="form-group row">
+            <div class="col-8 offset-4">
+                @if (Model.Id != 0)
+                {
+                    <partial name="_EditAndBackToListButton" model="Model.Id" />
+                }
+                else
+                {
+                    <partial name="_CreateAndBackToListButton" />
+                }
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,38 @@
+﻿.core-features {
+    box-shadow: 0 0 10px 0 rgba(83, 82, 82,0.1);
+    margin-bottom: 30px;
+    padding: 50px 0;
+    text-align: center;
+    background: #fff;
+}
+
+    .core-features h3 {
+        color: #232323;
+        font-size: 18px;
+        padding: 30px 0 10px;
+        text-transform: capitalize;
+    }
+
+    .core-features p {
+        color: #232323;
+        font-size: 14px;
+        padding: 0 15px;
+    }
+
+.circle {
+    border: 5px solid #f3f3f5;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #e7e8ec inset;
+    width: 120px;
+    height: 120px;
+    display: inline-block;
+    color: #27ae60;
+    margin-bottom: 10px;
+}
+
+    .circle img {
+        display: table;
+        height: 74px;
+        margin: 16px auto;
+        width: 74px;
+    }

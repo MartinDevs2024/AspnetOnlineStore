@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - OrOnlineStore</title>
+    <meta name="description" content="@ViewBag.Description" />
+    <meta name="Keywords" content="@ViewBag.Keywords" />
+    <meta name="Keywords" content="Appliance Repair,Washer Repair,Dryer Repair,Refrigator Repair,Dishwasher Repair,Microwave Repair,Davenport,Polk County,Haines city,Poinciana,Oven Repair" />
+    <meta name="author" content="Martin Fernandez" />
+    <meta name="description" content="Amazing Appliance Repair template In Polk County area." />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/slick.css" rel="stylesheet" />
+    <link href="~/css/venobox.css" rel="stylesheet" />
+    <link href="~/css/aos.css" rel="stylesheet" />
+    <link href="~/css/core.css" rel="stylesheet" />
+    <link href="~/css/gallery.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625739891435049"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- preloader start -->
+    <div class="preloader">
+        <div class="spin"></div>
+    </div>
+    <!-- preloader end -->
+    <partial name="_header" />
+    <div class="body-content">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+    <partial name="_Footer" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <script src="https://kit.fontawesome.com/e19c476714.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
+    <script src="~/js/slick.min.js"></script>
+    <script src="~/js/owl.js"></script>
+    <script src="~/js/scrolltop.js"></script>
+    <script src="~/js/stickynav.js"></script>
+    <script src="~/js/togglemenu.js"></script>
+    <script>
+        (function ($) {
+            'use strict';
+            // Preloader js
+            $(window).on('load', function () {
+                $('.preloader').fadeOut(700);
+            });
+            // Background-images
+            $('[data-background]').each(function () {
+                $(this).css({
+                    'background-image': 'url(' + $(this).data('background') + ')'
+                });
+            });
+            //Hero Slider
+            $('.hero-slider').slick({
+                autoplay: true,
+                infinite: true,
+                arrows: true,
+                prevArrow: '<button type=\'button\' class=\'prevArrow\'></button>',
+                nextArrow: '<button type=\'button\' class=\'nextArrow\'></button>',
+                dots: false,
+                autoplaySpeed: 7000,
+                pauseOnFocus: false,
+                pauseOnHover: false
+            });
+            $('.hero-slider').slickAnimation();
+        })(jQuery);
+    </script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

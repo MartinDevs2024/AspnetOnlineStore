@@ -1,0 +1,155 @@
+﻿@model IEnumerable<Repair>
+@{
+    ViewData["Title"] = "Repairs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Description = "We Repair Everything Appliance";
+    ViewBag.Keywords = "Cooktops Repair, Polk County, Poinciana";
+}
+
+<!-- Card-area -->
+<section id="card-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <hr />
+                <h2 class="text-center">HOME APPLIANCE REPAIR</h2>
+                <hr />
+            </div>
+        </div>
+        <div id="card" class="row"></div>
+    </div>
+</section>
+
+
+@section scripts {
+    <script>
+        var repairs = [
+            {
+                "id": 1,
+                "type": "Cooktops Repair",
+                "price": 0,
+                "address": "InHome-Repair",
+                "description": "We are committed to providing the friendliest, most reliable, same-day service ",
+                "days": "Mon-Fri",
+                "area": "orlando",
+                "image": "cooktop"
+            },
+            {
+                "id": 2,
+                "type": "Garbage Disposal Repair",
+                "price": 0,
+                "address": "InHome-Repair",
+                "description": "We are committed to providing the friendliest, most reliable, same-day service ",
+                "days": "Mon-Fri",
+                "area": "orlando",
+                "image": "garbage-disposal"
+            },
+            {
+                "id": 3,
+                "type": "Range / Stoves Repair",
+                "price": 0,
+                "address": "InHome-Repair",
+                "description": "We are committed to providing the friendliest, most reliable, same-day service ",
+                "days": "Mon-Fri",
+                "area": "orlando",
+                "image": "stove"
+            },
+            {
+                "id": 4,
+                "type": "Refrigator Repair",
+                "price": 0,
+                "address": "InHome-Repair",
+                "description": "We are committed to providing the friendliest, most reliable, same-day service ",
+                "days": "Mon-Fri",
+                "area": "orlando",
+                "image": "refrigator"
+            },
+            {
+                "id": 5,
+                "type": "Stand Alone Freezers Repair",
+                "price": 0,
+                "address": "InHome-Repair",
+                "description": "We are committed to providing the friendliest, most reliable, same-day service ",
+                "days": "Mon-Fri",
+                "area": "orlando",
+                "image": "alonefreezer"
+            },
+            {
+                "id": 6,
+                "type": "Wall Oven Repair",
+                "price": 0,
+                "address": "InHome-Repair",
+                "description": "We are committed to providing the friendliest, most reliable, same-day service ",
+                "days": "Mon-Fri",
+                "area": "orlando",
+                "image": "wall-oven"
+            },
+            {
+                "id": 7,
+                "type": "Washer and Dryer Repair",
+                "price": 0,
+                "address": "InHome-Repair",
+                "description": "We are committed to providing the friendliest, most reliable, same-day service ",
+                "days": "Mon-Fri",
+                "area": "orlando",
+                "image": "washer-dryer"
+            },
+            {
+                "id": 8,
+                "type": "Dish Washer Repair",
+                "price": 0,
+                "address": "InHome-Repair",
+                "description": "We are committed to providing the friendliest, most reliable, same-day service ",
+                "days": "Mon-Fri",
+                "area": "orlando",
+                "image": "dishwasher"
+            },
+            {
+                "id": 9,
+                "type": "Ice Machine Repair",
+                "price": 0,
+                "address": "InHome-Repair",
+                "description": "We are committed to providing the friendliest, most reliable, same-day service ",
+                "days": "Mon-Fri",
+                "area": "orlando",
+                "image": "ice-maker"
+            }
+        ];
+        const repairsList = document.getElementById("card");
+        let repairsCharacters = [];
+        // Display the Repairs
+        const loadRepairs = async () => {
+            try {
+                const resp = await fetch('/api/repairs');
+                repairsCharacters = await resp.json();
+                displayRepairs(repairsCharacters);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        const displayRepairs = (repairs) => {
+            const htmlString = repairs.map((repair) => {
+                return `     <div class="col-md-4 col-sm-6 col-xs-12">
+                                             <div class="core-features">
+                                                    <div class="circle">
+                                                        <img class="img-fluid" src="/content/blog/${repair.imageUrl}" alt="crib thumbnail">
+                                                    </div>
+                                                    <div style="height:230px" class="mb-3">
+                                                        <h3>${repair.repairType}</h3>
+                                                        <p><i class="fa fa-home"></i>${repair.location}</p>
+                                                            <hr>
+                                                        <span class="label label-primary">
+                                                            We Are Open: Mon-Sat
+                                                         </span>
+                                                        <hr>
+                                                        <a href="/repairs/details/${repair.id}" id="more" class="btn btn-sm btn-primary more"> Details </a>
+                                                        <p style="display:none;">${repairs.description}</p>
+                                                    </div>
+                                              </div>
+                                          </div>`;
+            }).join('');
+            repairsList.innerHTML = htmlString;
+        }
+        loadRepairs();
+    </script>
+}
