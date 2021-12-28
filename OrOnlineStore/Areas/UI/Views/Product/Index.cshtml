@@ -113,10 +113,12 @@
                 <h5 class="card-header">Search</h5>
                 <div class="card-body">
                     <div class="input-group" id="searchWrapper">
-                        <input type="text" class="form-control"
-                               name="searchBar"
-                               id="searchBar"
-                               placeholder="Search for...">
+                        <form action="/" onsubmit="return false">
+                            <input type="text" class="form-control"
+                                   name="searchBar"
+                                   id="search"
+                                   placeholder="Search for...">
+                        </form>
                     </div>
                 </div>
                 <h5 class="card-header">Categories</h5>
@@ -160,7 +162,8 @@
                                 <div class="circle">
                                     <img src="@product.ImageUrl" alt="@product.ProductTitle" class="img-fluid">
                                 </div>
-                                <div class="mb-3">
+                                <div class="product-details mb-3">
+                                    <h4>@product.ProductTitle</h4>
                                     <p>List Price: <strike><b class="">$@product.ListPrice.ToString("0.00")</b></strike></p>
                                     <p style="color:maroon">As low as: <b class="">$@product.Price100.ToString("0.00")</b></p>
                                     <span class="mb-2">$@product.ListPrice.ToString("0.00")</span>
@@ -201,7 +204,24 @@
             });
         }
 
-    </script>
+        //Search Filter
+        const search = document.getElementById("search");
+        const productName = document.querySelectorAll(".product-details h4");
 
+        search.addEventListener("keyup", filterProducts);
+
+        function filterProducts(e) {
+            const text = e.target.value.toLowerCase();
+            productName.forEach(function (product) {
+                console.log(product);
+                const item = product.firstChild.textContent;
+                if (item.toLowerCase().indexOf(text) != -1) {
+                    product.parentElement.parentElement.style.display = "block";
+                } else {
+                    product.parentElement.parentElement.style.display = "none";
+                }
+            })
+        }
+    </script>
 }
 
