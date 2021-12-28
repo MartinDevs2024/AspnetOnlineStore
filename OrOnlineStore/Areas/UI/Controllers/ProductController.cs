@@ -42,5 +42,16 @@ namespace OrOnlineStore.Areas.UI.Controllers
             };
             return View(cartObj);
         }
+
+        #region API CALLS
+        [HttpGet]
+        public ActionResult GetAll() 
+        {
+            var objFromDb = _unitOfWork.Product.GetAll();
+            return Json(new { data = objFromDb });
+        }
+
+        #endregion
+
     }
 }

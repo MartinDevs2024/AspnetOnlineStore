@@ -91,5 +91,15 @@ namespace OrOnlineStore.Areas.Admin.Controllers
             var mine = repairImageUrl.Substring(repairImageUrl.LastIndexOf('.') + 1);
             return new FileStreamResult(_fileManager.ImageStream(repairImageUrl), $"repairImageUrl/{mine}");
         }
+
+        #region API CALLS
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var ObjFromDb = _repo.GetAllRepairs();
+            return Json(new { data = ObjFromDb });
+        }
+
+        #endregion
     }
 }
