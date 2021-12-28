@@ -28,7 +28,7 @@ function submitData(e) {
         return false;
     };
 
-    fetch('/MyMessages/Create', {
+    fetch('/UI/MyMessages/Create', {
         method: 'POST',
         headers: {
             'Accept': 'application/json, text/plain, */*',
