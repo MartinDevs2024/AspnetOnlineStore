@@ -44,10 +44,10 @@ namespace OrOnlineStore.Areas.UI.Controllers
         }
 
         #region API CALLS
-        [HttpGet]
+        [HttpGet("api/products")]
         public ActionResult GetAll() 
         {
-            var objFromDb = _unitOfWork.Product.GetAll();
+            var objFromDb = _unitOfWork.Product.GetAll(includeProperties: "Category,CoverType");
             return Json(new { data = objFromDb });
         }
 

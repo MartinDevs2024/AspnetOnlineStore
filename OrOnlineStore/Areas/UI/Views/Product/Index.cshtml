@@ -4,8 +4,6 @@
     var Title = "Latest Products";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<!-- Box icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
 
 <style>
     :root {
@@ -182,6 +180,8 @@
 </div>
 @section scripts{
     <script>
+        const baseURL = '/api/products';
+        const sectionCard = document.querySelector('#card');
         const btns = document.querySelectorAll(".mybtn");
         const storeProducts = document.querySelectorAll(".store-products");
         //const search
