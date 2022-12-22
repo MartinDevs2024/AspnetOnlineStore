@@ -52,7 +52,7 @@ namespace OrOnlineStore.Areas.Admin.Controllers
                 }),
             };
 
-            if (id == null)
+            if (id == null || id == 0)
             {
                 return View(productVM);
             }
