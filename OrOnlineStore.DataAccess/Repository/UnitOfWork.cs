@@ -23,6 +23,7 @@ namespace OrOnlineStore.DataAccess.Repository
             ShoppingCart = new ShoppingCartRepository(_db);
             OrderDetails = new OrderDetailsRepository(_db);
             OrderHeader = new OrderHeaderRepository(_db);
+            ApplicationUser = new ApplicationUserRepository(_db);
         }
 
         public IProductRepository Product { get; private set; }
@@ -35,6 +36,7 @@ namespace OrOnlineStore.DataAccess.Repository
 
         public IOrderDetailsRepository OrderDetails { get; private set; }
 
+        public IApplicationUserRepository ApplicationUser { get; private set; }
         public void Dispose()
         {
             _db.Dispose();

@@ -13,9 +13,8 @@ namespace OrOnlineStore.DataAccess.Repository.IRepository
         ICoverTypeRepository CoverType { get; }
         IShoppingCartRepository ShoppingCart { get; }
         IOrderHeaderRepository OrderHeader { get; }
-
         IOrderDetailsRepository OrderDetails { get; }
-
+        IApplicationUserRepository ApplicationUser { get; }
         void Save();
     }
 }

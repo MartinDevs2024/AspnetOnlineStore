@@ -1,4 +1,6 @@
-﻿@using OrOnlineStore.Utility
+﻿@using Microsoft.AspNetCore.Http
+@using OrOnlineStore.Utility
+@inject IHttpContextAccessor HttpContextAccessor
 
 <nav class="navbar navbar-expand-md navbar-toggleable-sm navbar-dark bg-primary mb-3">
     <div class="container">
@@ -16,6 +18,25 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="Admin"
                            asp-for="Admin" asp-controller="Panel" asp-action="FrontPage">Panel</a>
+                    </li>
+                }
+                @if (HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCart) != null)
+                {
+                    <li style="color:white;">
+                        <a asp-area="UI" asp-controller="Cart" asp-action="Index" class="nav-link">
+                            @{
+                                var count = HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCart);
+                            }
+                            <i class="fas fa-shopping-cart"></i> &nbsp; (@count)
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li style="color:white;">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-shopping-cart"></i> &nbsp; (0)
+                        </a>
                     </li>
                 }
             </ul>
