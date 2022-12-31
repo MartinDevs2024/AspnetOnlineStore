@@ -158,15 +158,15 @@
                         <div id="store-products">
                             <div class="core-features">
                                 <div class="circle">
-                                    <img src="@product.ImageUrl" alt="@product.ProductTitle" class="img-fluid">
+                                    <img src="@product.ImageUrl" alt="@product.Title" class="img-fluid">
                                 </div>
                                 <div class="product-details mb-3">
-                                    <h4>@product.ProductTitle</h4>
+                                    <h4>@product.Title</h4>
                                     <p>List Price: <strike><b class="">$@product.ListPrice.ToString("0.00")</b></strike></p>
                                     <p style="color:maroon">As low as: <b class="">$@product.Price100.ToString("0.00")</b></p>
                                     <span class="mb-2">$@product.ListPrice.ToString("0.00")</span>
                                     <hr />
-                                    <a asp-action="Details" class="btn btn-primary" asp-route-id="@product.Id">Details</a>
+                                    <a asp-action="Details" class="btn btn-primary" asp-route-productId="@product.Id">Details</a>
                                 </div>
                             </div>
                         </div>

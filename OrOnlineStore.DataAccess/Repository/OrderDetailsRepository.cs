@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OrOnlineStore.DataAccess.Repository
 {
-    public class OrderDetailsRepository : Repo<OrderDetails>, IOrderDetailsRepository
+    public class OrderDetailsRepository : Repo<OrderDetail>, IOrderDetailsRepository
     {
         private readonly ApplicationDbContext _db;
 
@@ -19,7 +19,7 @@ namespace OrOnlineStore.DataAccess.Repository
         }
 
 
-        public void Update(OrderDetails obj)
+        public void Update(OrderDetail obj)
         {
             _db.Update(obj);
         }

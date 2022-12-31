@@ -1,0 +1,15 @@
+﻿<div class="row">
+    <div class="container">
+        @if (User.IsInRole(OrOnlineStore.Utility.SD.Role_Admin))
+        {
+            <div class="form-group row col-2" id="divTechnicianList">
+                <label> Select Technician</label>
+                @Html.DropDownList("technicianId", new SelectList(ViewBag.TechnicianList, "Id", "Name"), new
+                { @class = "form-control select2" })
+            </div>
+        }
+        <div id="calendar"></div>
+    </div>
+</div>
+
+<partial name="_AddEditAppointment" />

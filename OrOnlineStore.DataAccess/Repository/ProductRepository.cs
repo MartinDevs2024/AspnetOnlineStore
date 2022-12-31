@@ -17,26 +17,25 @@ namespace OrOnlineStore.DataAccess.Repository
         {
             _db = db;
         }
-        public void Update(Product product)
+        public void Update(Product obj)
         {
-            var objFromDb = _db.Products.FirstOrDefault(p => p.Id == product.Id);
+            var objFromDb = _db.Products.FirstOrDefault(p => p.Id == obj.Id);
             if (objFromDb != null)
             {
-                if (product.ImageUrl != null)
+                objFromDb.Title = obj.Title;
+                objFromDb.ISBN = obj.ISBN;
+                objFromDb.Price = obj.Price;
+                objFromDb.Price50 = obj.Price50;
+                objFromDb.ListPrice = obj.ListPrice;
+                objFromDb.Price100 = obj.Price100;
+                objFromDb.Description = obj.Description;
+                objFromDb.CategoryId = obj.CategoryId;
+                objFromDb.Author = obj.Author;
+                objFromDb.CoverTypeId = obj.CoverTypeId;
+                if (obj.ImageUrl != null)
                 {
-                    objFromDb.ImageUrl = product.ImageUrl;
+                    objFromDb.ImageUrl = obj.ImageUrl;
                 }
-                objFromDb.ISBN = product.ISBN;
-                objFromDb.Price = product.Price;
-                objFromDb.Price50 = product.Price50;
-                objFromDb.ListPrice = product.ListPrice;
-                objFromDb.Price100 = product.Price100;
-                objFromDb.ProductTitle = product.ProductTitle;
-                objFromDb.Description = product.Description;
-                objFromDb.CategoryId = product.CategoryId;
-                objFromDb.Author = product.Author;
-                objFromDb.CoverTypeId = product.CoverTypeId;
-
             }
         }
     }

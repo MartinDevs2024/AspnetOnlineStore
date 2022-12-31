@@ -1,20 +1,20 @@
 ﻿var dataTable;
 
-
 $(document).ready(function () {
     loadDataTable();
 });
 
+
 function loadDataTable() {
-    dataTable = $("#tblData").DataTable({
+    dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url": "/Company/GetAll"
+            "url": "/Admin/Company/GetAll"
         },
         "columns": [
             { "data": "name", "width": "15%" },
             { "data": "streetAddress", "width": "15%" },
-            { "data": "city", "width": "15%" },
-            { "data": "state", "width": "15%" },
+            { "data": "city", "width": "10%" },
+            { "data": "state", "width": "10%" },
             { "data": "phoneNumber", "width": "15%" },
             {
                 "data": "isAuthorizedCompany",
@@ -23,7 +23,7 @@ function loadDataTable() {
                         return `<input type="checkbox" disabled checked />`
                     }
                     else {
-                        return `<input type="checkbox" disabled />`
+                        return `<input type="checkbox" disabled/>`
                     }
                 },
                 "width": "10%"
@@ -31,15 +31,17 @@ function loadDataTable() {
             {
                 "data": "id",
                 "render": function (data) {
-                    return `<div class="text-center">
-                            <a href="/Company/Upsert/${data}" class="btn btn-success text-white" style="cursor:pointer">
-                                <i class="fas fa-edit"></i> &nbsp;
-                            </a>
-                            <a onclick=Delete("/Company/Delete/${data}") class="btn btn-success text-white" style="cursor:pointer">
-                                <i class="fas fa-trash-alt"></i> &nbsp;
-                            </a>
-                            </div>`;
-                }, "width": "40%"
+                    return `
+                            <div class="text-center">
+                                <a href="/Admin/Company/Upsert/${data}" class="btn btn-success text-white" style="cursor:pointer">
+                                    <i class="fas fa-edit"></i> 
+                                </a>
+                                <a onclick=Delete("/Admin/Company/Delete/${data}") class="btn btn-danger text-white" style="cursor:pointer">
+                                    <i class="fas fa-trash-alt"></i> 
+                                </a>
+                            </div>
+                           `;
+                }, "width": "25%"
             }
         ]
     });
@@ -51,7 +53,7 @@ function Delete(url) {
         text: "You will not be able to restore the data!",
         icon: "warning",
         buttons: true,
-        dangeMode: true
+        dangerMode: true
     }).then((willDelete) => {
         if (willDelete) {
             $.ajax({
@@ -61,11 +63,12 @@ function Delete(url) {
                     if (data.success) {
                         toastr.success(data.message);
                         dataTable.ajax.reload();
-                    } else {
+                    }
+                    else {
                         toastr.error(data.message);
                     }
                 }
-            })
+            });
         }
     });
 }

@@ -11,15 +11,16 @@ function loadDataTable() {
             "url": "/Admin/Category/GetAll"
         },
         "columns": [
-            { "data": "name", "width": "60%" },
+            { "data": "name", "width": "50%" },
+            { "data": "displayOrder", "width": "30%" },
             {
                 "data": "id",
                 "render": function (data) {
                     return `<div class="text-center">
-                            <a href="/Admin/Category/Upsert/${data}" class="btn btn-success text-white" style="cursor:pointer">
+                            <a href="/Admin/Category/Edit/${data}" class="btn btn-success text-white" style="cursor:pointer">
                                 <i class="fas fa-edit"></i> &nbsp;
                             </a>
-                            <a onclick=Delete("/Admin/Category/Delete/${data}") class="btn btn-success text-white" style="cursor:pointer">
+                            <a href="/Admin/Category/Delete/${data}" class="btn btn-danger text-white" style="cursor:pointer">
                                 <i class="fas fa-trash-alt"></i> &nbsp;
                             </a>
                             </div>`;

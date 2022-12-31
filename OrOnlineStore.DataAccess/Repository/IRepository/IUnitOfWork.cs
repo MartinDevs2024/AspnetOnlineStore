@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace OrOnlineStore.DataAccess.Repository.IRepository
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
+        ICompanyRepository Company { get; }
         IProductRepository Product { get; }
         ICategoryRepository Category { get; }
         ICoverTypeRepository CoverType { get; }

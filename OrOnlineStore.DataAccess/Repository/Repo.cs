@@ -13,31 +13,26 @@ namespace OrOnlineStore.DataAccess.Repository
     public class Repo<T> : IRepository<T> where T : class
     {
         private readonly ApplicationDbContext _db;
-        private DbSet<T> dbSet;
+        internal DbSet<T> dbSet;
 
         public Repo(ApplicationDbContext db)
         {
             _db = db;
+            //_db.ShoppingCarts.Include(u => u.Product).Include(u=>u.CoverType);
             this.dbSet = _db.Set<T>();
         }
         public void Add(T entity)
         {
             dbSet.Add(entity);
         }
-
-        public T Get(int id)
-        {
-            return dbSet.Find(id);
-        }
-
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = null)
+        //includeProp - "Category,CoverType"
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             if (filter != null)
             {
                 query = query.Where(filter);
             }
-
             if (includeProperties != null)
             {
                 foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -45,35 +40,40 @@ namespace OrOnlineStore.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
-
-            if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
             return query.ToList();
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter = null, string includeProperties = null)
+        public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true)
         {
-            IQueryable<T> query = dbSet;
-            if (filter != null)
+            if (tracked)
             {
-                query = query.Where(filter);
-            }
-            if(includeProperties != null)
-            {
-                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProp);
-                }
-            }
-            return query.FirstOrDefault();
-        }
+                IQueryable<T> query = dbSet;
 
-        public void Remove(int id)
-        {
-            T entity = dbSet.Find(id);
-            Remove(entity);
+                query = query.Where(filter);
+                if (includeProperties != null)
+                {
+                    foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProp);
+                    }
+                }
+                return query.FirstOrDefault();
+            }
+            else
+            {
+                IQueryable<T> query = dbSet.AsNoTracking();
+
+                query = query.Where(filter);
+                if (includeProperties != null)
+                {
+                    foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProp);
+                    }
+                }
+                return query.FirstOrDefault();
+            }
+
         }
 
         public void Remove(T entity)

@@ -10,6 +10,6 @@ namespace OrOnlineStore.Models.ViewModels
     {
         public OrderHeader OrderHeader { get; set; }
 
-        public IEnumerable<OrderDetails> OrderDetails { get; set; }
+        public IEnumerable<OrderDetail> OrderDetails { get; set; }
     }
 }

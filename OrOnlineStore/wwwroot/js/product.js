@@ -10,22 +10,17 @@ function loadDataTable() {
             "url": "/Admin/Product/GetAll"
         },
         "columns": [
-            { "data": "productTitle", "width": "15%" },
+            { "data": "title", "width": "15%" },
             { "data": "isbn", "width": "15%"},
             { "data": "price", "width": "15%" },
             { "data": "author", "width": "15%" },
-            { "data": "description", "width": "15%" },
-            { "data": "listPrice", "width": "15%" },
-            { "data": "price", "width": "15%" },
-            { "data": "price50", "width": "15%" },
-            { "data": "price100", "width": "15%" },
             { "data": "category.name", "width": "15%" },
             {
                 "data": "id",
                 "render": function (data) {
                     return `
                             <div class="text-center">
-                                <a href="/Admin/Product/Upsert/${data}" class="btn btn-success text-white" style="cursor:pointer">
+                                <a href="/Admin/Product/Upsert?id=${data}" class="btn btn-success text-white" style="cursor:pointer">
                                     <i class="fas fa-edit"></i> 
                                 </a>
                                 <a onclick=Delete("/Admin/Product/Delete/${data}") class="btn btn-danger text-white" style="cursor:pointer">
@@ -39,27 +34,29 @@ function loadDataTable() {
     });
 }
 function Delete(url) {
-    swal({
-        title: "Are you sure you want to Delete?",
-        text: "You will not be able to restore the data!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true
-    }).then((willDelete) => {
-        if (willDelete) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
             $.ajax({
-                type: "DELETE",
                 url: url,
+                type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
-                        toastr.success(data.message);
                         dataTable.ajax.reload();
+                        toastr.success(data.message);
                     }
                     else {
                         toastr.error(data.message);
                     }
                 }
-            }) 
+            })
         }
-    });
+    })
 }

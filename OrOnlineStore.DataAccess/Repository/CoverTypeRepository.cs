@@ -17,14 +17,10 @@ namespace OrOnlineStore.DataAccess.Repository
         {
             _db = db;
         }
-        public void Update(CoverType coverType)
+
+        public void Update(CoverType obj)
         {
-            var objFromDb = _db.Categories.FirstOrDefault(s => s.Id == coverType.Id);
-            if (objFromDb != null)
-            {
-                objFromDb.Name = coverType.Name;
-                _db.SaveChanges();
-            }
+            _db.CoverTypes.Update(obj);
         }
     }
 }

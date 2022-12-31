@@ -23,45 +23,107 @@ namespace OrOnlineStore.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
+       
+            return View();
+         
+        }
+
+        //GET
+        public IActionResult Create()
+        {
             return View();
         }
-        public IActionResult Upsert(int? id)
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Category obj)
         {
-            Category category = new Category();
-            if (id == null)
+            if (obj.Name == obj.DisplayOrder.ToString())
             {
-                //this is for create
-                return View(category);
+                ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name.");
             }
-            //this is for edit
-            category = _unitOfWork.Category.Get(id.GetValueOrDefault());
-            if (category == null)
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Save();
+                TempData["success"] = "Category created successfully";
+                return RedirectToAction("Index");
+            }
+            return View(obj);
+        }
+
+        //GET
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-            return View(category);
+
+            var categoryFromDbFirst = _unitOfWork.Category.GetFirstOrDefault(u => u.Id == id);
+
+            if (categoryFromDbFirst == null)
+            {
+                return NotFound();
+            }
+            return View(categoryFromDbFirst);
+     
         }
 
+        //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = SD.Role_Admin)]
-        public IActionResult Upsert(Category category)
+        public IActionResult Edit(Category obj)
         {
+            if (obj.Name == obj.DisplayOrder.ToString())
+            {
+                ModelState.AddModelError("name", "The Display Order cannot exactly match the Name.");
+
+            }
             if (ModelState.IsValid)
             {
-                if (category.Id == 0)
-                {
-                   _unitOfWork.Category.Add(category);
-                }
-                else
-                {
-                    _unitOfWork.Category.Update(category);
-                }
+                _unitOfWork.Category.Update(obj);
                 _unitOfWork.Save();
-                return RedirectToAction(nameof(Index));
+                TempData["success"] = "Category updated successfully";
+                return RedirectToAction("Index");
             }
-            return View(category);
+            return View(obj);
         }
+
+        //GET
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var categoryFromDbFirst = _unitOfWork.Category.GetFirstOrDefault(u => u.Id == id);
+
+            if (categoryFromDbFirst == null)
+            {
+                return NotFound();
+            }
+
+            return View(categoryFromDbFirst);
+        }
+
+        //POST
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletePost(int? id)
+        {
+            var obj = _unitOfWork.Category.GetFirstOrDefault(u => u.Id == id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _unitOfWork.Category.Remove(obj);
+            _unitOfWork.Save();
+            TempData["success"] = "Category deleted successfully";
+            return RedirectToAction("Index");
+        }
+
 
         #region
         [HttpGet]
@@ -72,9 +134,9 @@ namespace OrOnlineStore.Areas.Admin.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteCategory(int? id)
         {
-            var objFromDb = _unitOfWork.Category.Get(id);
+            var objFromDb = _unitOfWork.Category.GetFirstOrDefault(c =>c.Id == id);
             if (objFromDb == null)
             {
                 TempData["Error"] = "Error deleting Category";

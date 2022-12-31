@@ -13,6 +13,7 @@ using OrOnlineStore.DataAccess.Repository;
 using OrOnlineStore.DataAccess.Repository.FileManager;
 using OrOnlineStore.DataAccess.Repository.IRepository;
 using OrOnlineStore.Utility;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace OrOnlineStore
             services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<IRepo, Repository>();
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
             services.AddTransient<IFileManager, FileManager>();
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IRepairRepository, RepairRepository>();
@@ -77,6 +79,7 @@ namespace OrOnlineStore
             app.UseStaticFiles();
 
             app.UseRouting();
+            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["SecretKey"];
             app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();

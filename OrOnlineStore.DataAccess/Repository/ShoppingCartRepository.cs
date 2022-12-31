@@ -17,9 +17,16 @@ namespace OrOnlineStore.DataAccess.Repository
         {
             _db = db;
         }
-        public void Update(ShoppingCart obj)
+        public int DecrementCount(ShoppingCart shoppingCart, int count)
         {
-            _db.Update(obj);
+            shoppingCart.Count -= count;
+            return shoppingCart.Count;
+        }
+
+        public int IncrementCount(ShoppingCart shoppingCart, int count)
+        {
+            shoppingCart.Count += count;
+            return shoppingCart.Count;
         }
     }
 }

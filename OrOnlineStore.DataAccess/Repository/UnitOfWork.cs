@@ -12,7 +12,7 @@ namespace OrOnlineStore.DataAccess.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ApplicationDbContext _db;
+        private ApplicationDbContext _db;
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -24,24 +24,17 @@ namespace OrOnlineStore.DataAccess.Repository
             OrderDetails = new OrderDetailsRepository(_db);
             OrderHeader = new OrderHeaderRepository(_db);
             ApplicationUser = new ApplicationUserRepository(_db);
+            Company = new CompanyRepository(_db);
         }
-
         public IProductRepository Product { get; private set; }
         public ICategoryRepository Category { get; private set; }
         public ICoverTypeRepository CoverType { get; private set; }
-
         public IShoppingCartRepository ShoppingCart { get; private set; }
-
         public IOrderHeaderRepository OrderHeader { get; private set; }
-
         public IOrderDetailsRepository OrderDetails { get; private set; }
-
         public IApplicationUserRepository ApplicationUser { get; private set; }
-        public void Dispose()
-        {
-            _db.Dispose();
-        }
-
+        public ICompanyRepository Company { get; private set; }
+    
         public void Save()
         {
             _db.SaveChanges();

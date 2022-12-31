@@ -8,7 +8,7 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url": "/User/GetAll"
+            "url": "/Admin/User/GetAll"
         },
         "columns": [
             { "data": "name", "width": "15%" },
@@ -52,7 +52,7 @@ function loadDataTable() {
 function LockUnlock(id) {
     $.ajax({
         type: "POST",
-        url: '/User/LockUnlock',
+        url: '/Admin/User/LockUnlock',
         data: JSON.stringify(id),
         contentType: "application/json",
         success: function (data) {

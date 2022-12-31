@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,8 @@ using OrOnlineStore.DataAccess.Repository.IRepository;
 using OrOnlineStore.Models;
 using OrOnlineStore.Models.ViewModels;
 using OrOnlineStore.Utility;
+using Stripe;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -16,123 +19,173 @@ using System.Threading.Tasks;
 namespace OrOnlineStore.Areas.UI.Controllers
 {
     [Area("UI")]
+    [Authorize]
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailSender _emailSender;
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender,
-            UserManager<IdentityUser>userManager)
+        [BindProperty]
+        public ShoppingCartVM ShoppingCartVM { get; set; }
+        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender)
         {
             _unitOfWork = unitOfWork;
             _emailSender = emailSender;
-            _userManager = userManager;
         }
         public IActionResult Index()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
+            ShoppingCartVM = new ShoppingCartVM()
+            {
+                ListCart = _unitOfWork.ShoppingCart.GetAll(u => 
+                u.ApplicationUserId == claim.Value, 
+                includeProperties: "Product"),
+                OrderHeader = new(),
+            };
+
+            foreach (var cart in ShoppingCartVM.ListCart)
+            {
+                cart.Price = GetPriceBasedOnQuantity(cart.Count, cart.Product.Price,
+                    cart.Product.Price50, cart.Product.Price100);
+                ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+            }
+            return View(ShoppingCartVM);
+        }
+
+        public IActionResult Summary()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
             ShoppingCartVM shoppingCartVM = new ShoppingCartVM()
             {
-                OrderHeader = new Models.OrderHeader(),
-                ListCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value, includeProperties: "Product")
+                ListCart = _unitOfWork.ShoppingCart.GetAll(c => c.ApplicationUserId == claim.Value,
+                includeProperties: "Product"),
+                OrderHeader = new()
             };
-           
-            shoppingCartVM.OrderHeader.OrderTotal = 0;
-            shoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claim.Value, includeProperties: "company");
 
-            foreach (var list in shoppingCartVM.ListCart)
+            shoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser
+                .GetFirstOrDefault(c => c.Id == claim.Value);
+
+            shoppingCartVM.OrderHeader.Name = shoppingCartVM.OrderHeader.ApplicationUser.Name;
+            shoppingCartVM.OrderHeader.PhoneNumber = shoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+            shoppingCartVM.OrderHeader.StreetAddress = shoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
+            shoppingCartVM.OrderHeader.City = shoppingCartVM.OrderHeader.ApplicationUser.City;
+            shoppingCartVM.OrderHeader.State = shoppingCartVM.OrderHeader.ApplicationUser.State;
+            shoppingCartVM.OrderHeader.PostalCode = shoppingCartVM.OrderHeader.ApplicationUser.PostalCode;
+
+            foreach (var cart in ShoppingCartVM.ListCart)
             {
-                list.Price = SD.GetPriceBasedOnQuantity(list.Count, list.Product.Price,
-                    list.Product.Price50, list.Product.Price100);
-                shoppingCartVM.OrderHeader.OrderTotal += (list.Price * list.Count);
-                list.Product.Description = SD.ConvertToRawHtml(list.Product.Description);
-                if (list.Product.Description.Length > 100)
-                {
-                    list.Product.Description = list.Product.Description.Substring(0, 99) + "...";
-                }
+                cart.Price = GetPriceBasedOnQuantity(cart.Count, cart.Product.Price,
+                    cart.Product.Price50, cart.Product.Price100);
+                ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
-           
             return View(shoppingCartVM);
         }
 
         [HttpPost]
-        [ActionName("Index")]
-        public async Task<IActionResult> IndexPost()
+        [ActionName("Summary")]
+        [ValidateAntiForgeryToken]
+        public IActionResult SummaryPOST()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claim.Value);
 
-            if (user == null)
+            ShoppingCartVM.ListCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value,
+                includeProperties: "Product");
+
+            ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
+            ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
+            ShoppingCartVM.OrderHeader.OrderDate = System.DateTime.Now;
+            ShoppingCartVM.OrderHeader.ApplicationUserId = claim.Value;
+
+
+            foreach (var cart in ShoppingCartVM.ListCart)
             {
-                ModelState.AddModelError(string.Empty, "Verification email is empty!");
+                cart.Price = GetPriceBasedOnQuantity(cart.Count, cart.Product.Price,
+                    cart.Product.Price50, cart.Product.Price100);
+                ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
 
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-            var callbackUrl = Url.Page(
-               "/Account/ConfirmEmail",
-               pageHandler: null,
-               values: new { area = "Identity", userId = user.Id, code = code },
-               protocol: Request.Scheme);
+            _unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
+            _unitOfWork.Save();
+            foreach (var cart in ShoppingCartVM.ListCart)
+            {
+                OrderDetail orderDetail = new()
+                {
+                    ProductId = cart.ProductId,
+                    OrderId = ShoppingCartVM.OrderHeader.Id,
+                    Price = cart.Price,
+                    Count = cart.Count
+                };
+                _unitOfWork.OrderDetails.Add(orderDetail);
+                _unitOfWork.Save();
+            }
 
-            await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-            ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
-            return RedirectToAction("Index");
+            _unitOfWork.ShoppingCart.RemoveRange(ShoppingCartVM.ListCart);
+            _unitOfWork.Save();
+            return RedirectToAction("Index", "Home");
         }
+
 
         public IActionResult Plus(int cartId)
         {
             var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault
-                 (c => c.Id == cartId, includeProperties: "Product");
-
-            cart.Count += 1;
-            cart.Price = SD.GetPriceBasedOnQuantity(cart.Count, cart.Product.Price,
-                cart.Product.Price50, cart.Product.Price100);
+                 (c => c.Id == cartId);
+            _unitOfWork.ShoppingCart.IncrementCount(cart, 1);
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Minus(int cartId)
         {
-            var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault
-                  (c => c.Id == cartId, includeProperties: "Product");
+            var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(c => c.Id == cartId);
 
-            if (cart.Count == 1)
+            if (cart.Count <= 1)
             {
-                var cnt = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cart.ApplicationUserId).ToList().Count;
                 _unitOfWork.ShoppingCart.Remove(cart);
-                _unitOfWork.Save();
-                HttpContext.Session.SetInt32(SD.ssShoppingCart, cnt - 1);
-
             }
             else
             {
-                cart.Count -= 1;
-                cart.Price = SD.GetPriceBasedOnQuantity(cart.Count, cart.Product.Price,
-                    cart.Product.Price50, cart.Product.Price100);
-                _unitOfWork.Save();
+               _unitOfWork.ShoppingCart.DecrementCount(cart, 1);
             }
+            _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Remove(int cartId)
         {
             var cart = _unitOfWork.ShoppingCart.GetFirstOrDefault
-                (c => c.Id == cartId, includeProperties: "Product");
+                (c => c.Id == cartId);
 
-            var cnt = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cart.ApplicationUserId).ToList().Count;
-                _unitOfWork.ShoppingCart.Remove(cart);
-                _unitOfWork.Save();
-                HttpContext.Session.SetInt32(SD.ssShoppingCart, cnt - 1);
+            _unitOfWork.ShoppingCart.Remove(cart);
+            _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
+
+
+        private double GetPriceBasedOnQuantity(double quantity, double price, double price50, double price100)
+        {
+            if (quantity <= 50)
+            {
+                return price;
+            }
+            else
+            {
+                if (quantity <= 100)
+                {
+                    return price50;
+                }
+                else
+                {
+                    return price100;
+                }
+            }
+        }
+
     }
 }
 

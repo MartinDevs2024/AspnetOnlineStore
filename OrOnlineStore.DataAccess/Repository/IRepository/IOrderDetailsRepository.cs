@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace OrOnlineStore.DataAccess.Repository.IRepository
 {
-    public interface IOrderDetailsRepository : IRepository<OrderDetails>
+    public interface IOrderDetailsRepository : IRepository<OrderDetail>
     {
-        void Update(OrderDetails obj);
+        void Update(OrderDetail obj);
     }
 }

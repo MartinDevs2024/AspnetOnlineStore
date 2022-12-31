@@ -21,52 +21,97 @@ namespace OrOnlineStore.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
         }
 
-
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Upsert(int? id)
+        //GET
+        public IActionResult Create()
         {
-            CoverType coverType = new CoverType();
-            if (id == null)
+            return View();
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(CoverType obj)
+        {
+            if (ModelState.IsValid)
             {
-                //this is for create
-                return View(coverType);
+                _unitOfWork.CoverType.Add(obj);
+                _unitOfWork.Save();
+                return RedirectToAction("Index");
             }
-            //this is for edit
-            coverType = _unitOfWork.CoverType.Get(id.GetValueOrDefault());
-            if (coverType == null)
+            return View(obj);
+        }
+
+        //GET
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var coverTypeFromDbFirst = _unitOfWork.CoverType.GetFirstOrDefault(u => u.Id == id);
+            if (coverTypeFromDbFirst == null)
             {
                 return NotFound();
             }
 
-            return View(coverType);
+            return View(coverTypeFromDbFirst);
         }
 
+        //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = SD.Role_Admin)]
-        public IActionResult Upsert(CoverType coverType)
+        public IActionResult Edit(CoverType obj)
         {
             if (ModelState.IsValid)
             {
-                if (coverType.Id == 0)
-                {
-                    _unitOfWork.CoverType.Add(coverType);
-                    _unitOfWork.Save();
-                }
-                else
-                {
-                    _unitOfWork.CoverType.Update(coverType);
-                }
+                _unitOfWork.CoverType.Update(obj);
                 _unitOfWork.Save();
-                return RedirectToAction(nameof(Index));
+                TempData["success"] = "CoverType updated successfully";
+                return RedirectToAction("Index");
             }
-            return View(coverType);
-
+            return View(obj);
         }
+
+        //Delete
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var CovertypeFromDbFirst = _unitOfWork.CoverType.GetFirstOrDefault(u => u.Id == id);
+
+            if (CovertypeFromDbFirst == null)
+            {
+                return NotFound();
+            }
+            return View(CovertypeFromDbFirst);
+        }
+
+        //POST
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletePost(int? id)
+        { 
+           var obj = _unitOfWork.CoverType.GetFirstOrDefault(u => u.Id == id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _unitOfWork.CoverType.Remove(obj);
+            _unitOfWork.Save();
+            TempData["success"] = "Covertype deleted successfully";
+            return RedirectToAction("Index");
+        
+        
+        }
+        
 
         #region API CALLS
         [HttpGet]
@@ -79,9 +124,9 @@ namespace OrOnlineStore.Areas.Admin.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteCoverType(int? id)
         {
-            var objFromDb = _unitOfWork.CoverType.Get(id);
+            var objFromDb = _unitOfWork.CoverType.GetFirstOrDefault(u =>u.Id == id);
             if (objFromDb == null)
             {
                 return Json(new { success = false, message = "Error while deleting" });
