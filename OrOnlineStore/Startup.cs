@@ -39,7 +39,6 @@ namespace OrOnlineStore
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddScoped<IRepo, Repository>();
             services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
             services.AddTransient<IFileManager, FileManager>();
             services.AddSingleton<IEmailSender, EmailSender>();

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OrOnlineStore.DataAccess.Repository
 {
-    public class CategoryRepository : Repo<Category>, ICategoryRepository
+    public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
         private readonly ApplicationDbContext _db;
 

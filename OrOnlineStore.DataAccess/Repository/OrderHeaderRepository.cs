@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OrOnlineStore.DataAccess.Repository
 {
-    public class OrderHeaderRepository : Repo<OrderHeader>, IOrderHeaderRepository
+    public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderRepository
     {
         private readonly ApplicationDbContext _db;
 

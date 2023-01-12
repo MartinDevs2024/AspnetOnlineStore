@@ -1,104 +1,89 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrOnlineStore.DataAccess.Data;
 using OrOnlineStore.DataAccess.Repository.IRepository;
-using OrOnlineStore.Models;
-using OrOnlineStore.Models.Comments;
-using OrOnlineStore.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OrOnlineStore.DataAccess.Repository
 {
-    public class Repository : IRepo
+    public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _db;
+        internal DbSet<T> dbSet;
 
-        public Repository(ApplicationDbContext context)
+        public Repository(ApplicationDbContext db)
         {
-            _context = context;
+            _db = db;
+            //_db.ShoppingCarts.Include(u => u.Product).Include(u=>u.CoverType);
+            this.dbSet = _db.Set<T>();
         }
-        public void AddPost(Post post)
+        public void Add(T entity)
         {
-            _context.Posts.Add(post);
+            dbSet.Add(entity);
         }
-        public List<Post> GetAllPosts()
+        //includeProp - "Category,CoverType"
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
-            return _context.Posts.ToList();
-        }
-
-        public IndexViewModel GetAllPosts(
-           int pageNumber,
-           string category,
-           string search,
-           string orderBy)
-        {
-            Func<Post, bool> InCategory = (post) => { return post.Category.ToLower().Equals(category.ToLower()); };
-
-            int pageSize = 5;
-            int skipAmount = pageSize * (pageNumber - 1);
-
-            var query = _context.Posts.AsNoTracking().AsQueryable();
-
-            if (!String.IsNullOrEmpty(category))
-                query = query.Where(x => InCategory(x));
-
-            if (!String.IsNullOrEmpty(search))
-                query = query.Where(x => x.Title.Contains(search)
-                 || x.Body.Contains(search)
-                 || x.Description.Contains(search));
-
-            int postsCount = query.Count();
-            int pageCount = (int)Math.Ceiling((double)postsCount / pageSize);
-
-            return new IndexViewModel
+            IQueryable<T> query = dbSet;
+            if (filter != null)
             {
-                PageNumber = pageNumber,
-                NextPage = postsCount > skipAmount + pageSize,
-                Category = category,
-                Search = search,
-                Posts = query
-                       .Skip(skipAmount)
-                       .Take(pageSize)
-                       .OrderBy(p => p.Created)
-                       .ToList()
-
-            };
-        }
-
-        public Post GetPost(int id)
-        {
-            return _context.Posts
-          .Include(p => p.MainComments)
-                   .ThenInclude(m => m.SubComments)
-          .FirstOrDefault(p => p.Id == id);
-        }
-
-        public void RemovePost(int id)
-        {
-            _context.Posts.Remove(GetPost(id));
-        }
-
-        public void UpdatePost(Post post)
-        {
-            _context.Posts.Update(post);
-        }
-
-        public async Task<bool> SaveChangesAsync()
-        {
-            if (await _context.SaveChangesAsync() > 0)
-            {
-                return true;
+                query = query.Where(filter);
             }
-            return false;
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+            return query.ToList();
         }
 
-        public void AddSubComment(SubComment comment)
+        public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true)
         {
-            _context.SubComments.Add(comment);
+            if (tracked)
+            {
+                IQueryable<T> query = dbSet;
+
+                query = query.Where(filter);
+                if (includeProperties != null)
+                {
+                    foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProp);
+                    }
+                }
+                return query.FirstOrDefault();
+            }
+            else
+            {
+                IQueryable<T> query = dbSet.AsNoTracking();
+
+                query = query.Where(filter);
+                if (includeProperties != null)
+                {
+                    foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProp);
+                    }
+                }
+                return query.FirstOrDefault();
+            }
+
         }
 
+        public void Remove(T entity)
+        {
+            dbSet.Remove(entity);
+        }
+
+        public void RemoveRange(IEnumerable<T> entity)
+        {
+            dbSet.RemoveRange(entity);
+        }
     }
 }

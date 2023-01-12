@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OrOnlineStore.DataAccess.Repository
 {
-    public class ShoppingCartRepository : Repo<ShoppingCart>, IShoppingCartRepository
+    public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRepository
     {
         private readonly ApplicationDbContext _db;
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OrOnlineStore.DataAccess.Repository
 {
-    public class CoverTypeRepository : Repo<CoverType>, ICoverTypeRepository
+    public class CoverTypeRepository : Repository<CoverType>, ICoverTypeRepository
     {
         private readonly ApplicationDbContext _db;
 
