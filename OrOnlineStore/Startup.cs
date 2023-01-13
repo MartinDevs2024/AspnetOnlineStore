@@ -78,7 +78,7 @@ namespace OrOnlineStore
             app.UseStaticFiles();
 
             app.UseRouting();
-            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["SecretKey"];
+            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe:SecretKey").Get<string>();
             app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
