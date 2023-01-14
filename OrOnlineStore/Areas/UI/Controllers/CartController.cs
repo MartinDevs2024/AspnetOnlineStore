@@ -150,8 +150,8 @@ namespace OrOnlineStore.Areas.UI.Controllers
                 },
                     LineItems = new List<SessionLineItemOptions>(),
                     Mode = "payment",
-                    SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
-                    CancelUrl = domain + $"customer/cart/index",
+                    SuccessUrl = domain + $"UI/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
+                    CancelUrl = domain + $"UI/cart/index",
                 };
 
                 foreach (var item in ShoppingCartVM.ListCart)
@@ -204,7 +204,7 @@ namespace OrOnlineStore.Areas.UI.Controllers
                     _unitOfWork.Save();
                 }
             }
-            _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New Order - Bulky Book", "<p>New Order Created</p>");
+            _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New Order - Orline Store", "<p>New Order Created</p>");
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId ==
             orderHeader.ApplicationUserId).ToList();
             HttpContext.Session.Clear();
