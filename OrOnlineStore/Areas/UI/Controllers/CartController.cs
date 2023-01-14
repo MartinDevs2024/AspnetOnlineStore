@@ -140,8 +140,8 @@ namespace OrOnlineStore.Areas.UI.Controllers
             }
             if (applicationUser.CompanyId.GetValueOrDefault() == 0)
             {
-                //stripe settings 
-                var domain = "https://localhost:44300/";
+            //stripe settings 
+                var domain = "https://localhost:44305/";
                 var options = new SessionCreateOptions
                 {
                     PaymentMethodTypes = new List<string>
