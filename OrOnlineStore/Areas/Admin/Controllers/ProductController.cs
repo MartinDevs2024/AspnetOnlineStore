@@ -112,11 +112,6 @@ namespace OrOnlineStore.Areas.Admin.Controllers
             return View(obj);
         }
 
-
-
-
-
-
         #region API CALLS
         [HttpGet]
         public IActionResult GetAll()
