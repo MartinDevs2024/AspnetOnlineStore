@@ -127,22 +127,22 @@
                                 All
                             </button>
                             <button type="button" class="mybtn btn btn-success filter-btn" data-filter="washer">
-                                Washer Parts
+                                Washer 
                             </button>
                             <button type="button" class="mybtn btn btn-success filter-btn" data-filter="dryer">
-                                Dryer Parts
+                                Dryer 
                             </button>
-                            <button type="button" class="mybtn btn btn-success filter-btn" data-filter="refrigator">
-                                Refrigator Parts
+                            <button type="button" class="mybtn btn btn-success filter-btn" data-filter="refrigerator">
+                                Refrigerator 
                             </button>
                             <button type="button" class="mybtn btn btn-success filter-btn" data-filter="kits">
                                 Repair kits
                             </button>
                             <button type="button" class="mybtn btn btn-success btn-rounded filter-btn" data-filter="oven">
-                                Oven Parts
+                                Wall-Oven 
                             </button>
                             <button type="button" class="mybtn btn btn-success btn-rounded filter-btn" data-filter="dishwasher">
-                                DishWasher Parts
+                                DishWasher 
                             </button>
                         </div>
                     </div>
@@ -153,8 +153,7 @@
             <div class="row">
                 @foreach (var product in Model)
                 {
-
-                    <div class="col-md-3 col-sm-6 col-xs-12 mb-4 store-products @product.Category.Name">
+                    <div class="col-md-3 col-sm-6 col-xs-12 mb-4 store-products @product.Category.Name.ToLower()">
                         <div id="store-products">
                             <div class="core-features">
                                 <div class="circle">
@@ -174,8 +173,6 @@
                 }
             </div>
         </div>
-
-
     </div>
 </div>
 @section scripts{
