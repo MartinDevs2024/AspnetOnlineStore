@@ -2,16 +2,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="d-flex" id="wrapper">
+    <partial name="_AdminNavbar" />
+    <div id="page-content-wrapper">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+            <a class="btn btn-warning float-right" asp-area="Identity" asp-page="/Account/Register">
+                <i class="fas fa-plus"></i>
+                &nbsp; Create New User
+            </a>
+        </nav>
 <br />
 <div class="row">
     <div class="col-6">
         <h2 class="text-primary">User's List </h2>
-    </div>
-    <div class="col-6 text-right">
-        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">
-            <i class="fas fa-plus"></i>
-            &nbsp; Create New User
-        </a>
     </div>
 </div>
 
@@ -29,6 +33,8 @@
             </tr>
         </thead>
     </table>
+</div>
+</div>
 </div>
 
 @section Scripts{
