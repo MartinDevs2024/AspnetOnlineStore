@@ -31,7 +31,6 @@ namespace OrOnlineStore.Areas.UI.Controllers
                 _unitOfWork.Product.GetAll(includeProperties: "Category,CoverType");
             return View(productList);
         }
-
         public IActionResult Details(int productId)
         {
 
@@ -44,7 +43,6 @@ namespace OrOnlineStore.Areas.UI.Controllers
             };
             return View(cartObj);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -56,7 +54,6 @@ namespace OrOnlineStore.Areas.UI.Controllers
 
             ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.GetFirstOrDefault(
                 u => u.ApplicationUserId == claim.Value && u.ProductId == shoppingCart.ProductId);
-
 
             if (cartFromDb == null)
             {
@@ -71,12 +68,8 @@ namespace OrOnlineStore.Areas.UI.Controllers
                 _unitOfWork.ShoppingCart.IncrementCount(cartFromDb, shoppingCart.Count);
                 _unitOfWork.Save();
             }
-
-
             return RedirectToAction(nameof(Index));
         }
-
-
         #region API CALLS
         [HttpGet("api/products")]
         public ActionResult GetAll()
@@ -84,8 +77,6 @@ namespace OrOnlineStore.Areas.UI.Controllers
             var objFromDb = _unitOfWork.Product.GetAll(includeProperties: "Category,CoverType");
             return Json(new { data = objFromDb });
         }
-
         #endregion
-
     }
 }
