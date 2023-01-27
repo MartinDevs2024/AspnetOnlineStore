@@ -4,9 +4,14 @@
     Layout = "~/Views/shared/_Layout.cshtml";
     var title = "Create company";
 }
-
+<div class="d-flex" id="wrapper">
+    <partial name="_AdminNavbar" />
+    <div id="page-content-wrapper">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+        </nav>
 <form method="post">
-    <div class="row p-3 border">
+            <div class="border p-3 mt-4">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @if (Model.Id != 0)
         {
@@ -94,3 +99,5 @@
         </div>
     </div>
 </form>
+</div>
+</div>
