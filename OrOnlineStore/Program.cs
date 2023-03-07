@@ -58,6 +58,8 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 var scope = app.Services.CreateScope();
+
+// database update with the latest migrations
 await DataHelper.ManageDataAsync(scope.ServiceProvider);
 
 // Configure the HTTP request pipeline.
