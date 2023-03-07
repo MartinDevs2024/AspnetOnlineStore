@@ -17,14 +17,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Stripe;
 using OrOnlineStore.DataAccess.Repository.FileManager;
+using OrOnlineStore.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = ConnectionHelper.GetConnectionString(builder.Configuration);
+//var connectionString = builder.Configuration.GetSection("pgSettings")["pgConnection"];
 
 // Add services to the container
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(
+        options.UseNpgsql(
             builder.Configuration.GetConnectionString("DefaultConnection")
    ));
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
@@ -53,6 +57,8 @@ builder.Services.AddSession(options =>
 });
 
 var app = builder.Build();
+var scope = app.Services.CreateScope();
+await DataHelper.ManageDataAsync(scope.ServiceProvider);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
